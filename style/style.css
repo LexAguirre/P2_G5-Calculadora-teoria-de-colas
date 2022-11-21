@@ -1,0 +1,46 @@
+body {
+  background: linear-gradient(to right, rgb(8, 8, 49), rgb(0, 0, 0));
+}
+
+.container1 {
+  background: #eaeaeae8;
+  max-width: 400px;
+  margin: auto;
+  padding: 10px 20px;
+}
+
+.container2 {
+  background: #eaeaea;
+  max-width: 400px;
+  margin: auto;
+  padding: 10px 20px;
+}
+
+.header {
+  border-bottom: 1px solid rgb(27, 0, 0);
+}
+
+.titulo {
+  text-align: center;
+  padding: 0px;
+}
+
+#btn-link {
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+#btnRegister {
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.modal-body {
+  text-align: center;
+}
+
+.subtitulo {
+  text-align: center;
+}
