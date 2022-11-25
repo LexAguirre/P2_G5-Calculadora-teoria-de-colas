@@ -6,11 +6,11 @@ export default class Receptor {
     this._servicio = servicio;
     this._canales = canales;
   }
-
+  //(λ)
   getLlegada() {
     return this._llegada;
   }
-
+  //(µ)
   getServicio() {
     return this._servicio;
   }
