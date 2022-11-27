@@ -17,81 +17,52 @@ class App {
   readForm = () => {
     let receptor = Receptor.readForm();
 
-    let completado = this._estructura.add(receptor);
-    console.log(this._estructura);
+    if (receptor.getLlegada() > receptor.getServicio()) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "La tasa de llegada (λ) no puede ser mayor que la tasa de servicio (µ)",
+      });
 
-    this._printResolution(receptor);
-    Swal.fire("Bien!", "Ecuación Registrada", "success");
+      return;
+    } else {
+      this._printResolution(receptor);
+      Swal.fire("Bien!", "Ecuación Registrada", "success");
+    }
   };
 
-  _loopPrint(array) {
-    let html = "";
-    for (let i = 0; i < array.length; i++) {
-      html += `Letra: ${array[i].Letra} <br> Cordenada: ${array[i].Cordenada} <br> Resultado: ${array[i].Resultado} <br>`;
-    }
-    console.log(array);
-    return html;
-  }
-
-  _getCoords(array) {
-    let data = [];
-    for (let i = 0; i < array.length; i++) {
-      data.push(array[i].Cordenada);
-    }
-    console.log(data);
-  }
-
   _printResolution(receptor) {
-    document.getElementById("tituloObj").innerHTML = "Función Objetivo";
-    document.getElementById("textFunc").innerHTML = `${this._estructura.tipo(
+    document.getElementById("titulo").innerHTML = "Resultados";
+    document.getElementById(
+      "TitP0"
+    ).innerHTML = `Probabilidad de 0 en el sistema: `;
+    document.getElementById("FormP0").innerHTML = `▶ P₀ = ${this._estructura.P0(
       receptor
-    )} = ${this._estructura.forObj(receptor)}`;
-    document.getElementById("tituloSuj").innerHTML = "Sujeto a: ";
-    document.getElementById(
-      "R1"
-    ).innerHTML = `Restricción 1: ${this._estructura.forRes1(receptor)}
-    `;
-    document.getElementById(
-      "R2"
-    ).innerHTML = `Restricción 2: ${this._estructura.forRes2(receptor)}`;
-    this._estructura.tableInfo(receptor);
-    document.getElementById(
-      "resultado"
-    ).innerHTML = `${this._estructura.resultado(receptor)}`;
-    this._estructura.tableInfo(receptor);
-    document.getElementById("info").innerHTML = `${this._loopPrint(
-      this._estructura.tableInfo(receptor)
     )}`;
-
     document.getElementById(
-      "graph"
-    ).innerHTML = `<canvas id="myChart" width="400" height="400"></canvas>`;
-
-    const data = {
-      datasets: [
-        {
-          label: "Método Gráfico",
-          data: this._estructura.CoordsInfo(receptor),
-          backgroundColor: "rgb(255, 99, 132)",
-        },
-      ],
-    };
-
-    const ctx = document.getElementById("myChart").getContext("2d");
-    const myChart = new Chart(ctx, {
-      type: "scatter",
-      data: data,
-      options: {
-        scales: {
-          x: {
-            beginAtZero: true,
-          },
-          y: {
-            beginAtZero: true,
-          },
-        },
-      },
-    });
+      "TitL"
+    ).innerHTML = `Número promedio en el sistema: `;
+    document.getElementById(
+      "FormL"
+    ).innerHTML = `▶ L = ${this._estructura.clientesSistema(receptor)}`;
+    document.getElementById(
+      "TitW"
+    ).innerHTML = `Tiempo promedio en el sistema: `;
+    document.getElementById(
+      "FormW"
+    ).innerHTML = `▶ W = ${this._estructura.clientesFila(receptor)}`;
+    document.getElementById("TitLq").innerHTML = `Número promedio en la cola: `;
+    document.getElementById(
+      "FormLq"
+    ).innerHTML = `▶ Lq = ${this._estructura.tiempoSistema(receptor)}`;
+    document.getElementById("TitWq").innerHTML = `Tiempo promedio en la cola: `;
+    document.getElementById(
+      "FormWq"
+    ).innerHTML = `▶ Wq = ${this._estructura.tiempoFila(receptor)}`;
+    document.getElementById("TitS").innerHTML = `Servidores recomendados: `;
+    document.getElementById(
+      "FormS"
+    ).innerHTML = `▶ P = ${this._estructura.servidores(receptor)}`;
   }
 }
 

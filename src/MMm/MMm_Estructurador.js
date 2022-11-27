@@ -3,38 +3,76 @@
 export default class Estructurador {
   constructor() {
     this._estructura = new Array();
-    this._n = receptor.getCanales() - 1;
-    this._divLlegSer = receptor.getLlegada() / receptor.getServicio();
   }
 
   P0(receptor) {
     let part1 = 0;
-    for (let i = 0; i <= this._n; i++) {
-      part1 += (1 / factorial(i)) * Math.pow(this._divLlegSer, i);
+    let n = receptor.getCanales() - 1;
+    let divLlegSer = receptor.getLlegada() / receptor.getServicio();
+
+    for (let i = 0; i <= n; i++) {
+      part1 += (1 / this.factorial(i)) * Math.pow(divLlegSer, i);
     }
     let part2 =
-      (1 / factorial(receptor.getCanales())) *
-      Math.pow(this._divLlegSer, receptor.getCanales()) *
+      (1 / this.factorial(receptor.getCanales())) *
+      Math.pow(divLlegSer, receptor.getCanales()) *
       ((receptor.getCanales() * receptor.getServicio()) /
         (receptor.getCanales() * receptor.getServicio() -
-          receiver.getLlegada()));
+          receptor.getLlegada()));
 
     return 1 / (part1 + part2);
   }
 
-  clientesSistema(receptor) {}
+  clientesSistema(receptor) {
+    let divLlegSer = receptor.getLlegada() / receptor.getServicio();
+    let llegada = receptor.getLlegada(); //(λ)
+    let servicio = receptor.getServicio(); //(µ)
+    let canales = receptor.getCanales(); //(m)
+    let parFacto = canales * servicio - llegada;
 
-  clientesFila(receptor) {}
+    let part1 =
+      ((llegada * servicio * Math.pow(divLlegSer, canales)) /
+        (this.factorial(canales - 1) * Math.pow(parFacto, 2))) *
+      this.P0(receptor);
 
-  tiempoSistema(receptor) {}
+    return part1 + divLlegSer;
+  }
 
-  tiempoFila(receptor) {}
+  clientesFila(receptor) {
+    let divLlegSer = receptor.getLlegada() / receptor.getServicio();
+    let llegada = receptor.getLlegada(); //(λ)
+    let servicio = receptor.getServicio(); //(µ)
+    let canales = receptor.getCanales(); //(m)
+    let parFacto = canales * servicio - llegada;
 
-  servidores(receptor) {}
+    let part1 =
+      ((servicio * Math.pow(divLlegSer, canales)) /
+        (this.factorial(canales - 1) * Math.pow(parFacto, 2))) *
+      this.P0(receptor);
+
+    return part1 + 1 / servicio;
+  }
+
+  tiempoSistema(receptor) {
+    return (
+      this.clientesSistema(receptor) -
+      receptor.getLlegada() / receptor.getServicio()
+    );
+  }
+
+  tiempoFila(receptor) {
+    return this.clientesFila(receptor) - 1 / receptor.getServicio();
+  }
+
+  servidores(receptor) {
+    return (
+      receptor.getLlegada() / (receptor.getCanales() * receptor.getServicio())
+    );
+  }
 
   factorial(n) {
-    var total = 1;
-    for (i = 1; i <= n; i++) {
+    let total = 1;
+    for (let i = 1; i <= n; i++) {
       total = total * i;
     }
     return total;
